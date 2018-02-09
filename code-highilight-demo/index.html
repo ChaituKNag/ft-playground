@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Code Highlight Demo</title>
+</head>
+<body>
+    <p>Here is the code that gets highlighted:</p>
+    <pre data-language="javascript">
+function id(x) {
+    return x;
+}
+    </pre>
+
+    <script>
+        var languages = {
+            "javascript": /\b(function|return|var)\b/g
+        };
+
+        function highlightAllCode() {
+            var pres = document.body.getElementsByTagName('pre');
+            for(var i = 0; i < pres.length; i++) {
+                var pre = pres[i];
+                var lang = pre.getAttribute('data-language');
+                if (languages.hasOwnProperty(lang)) {
+                    highlightCode(pre, languages[lang]);
+                }
+            }
+        }
+
+        function highlightCode(node, keywordsRegex) {
+            var text = node.textContent;
+            node.textContent = ""; // clear the node
+
+            var match, pos = 0;
+            match = keywordsRegex.exec(text);
+            while ( match !== null) {
+                var before = text.slice(pos, match.index);
+                node.appendChild(document.createTextNode(before));
+                var strong = document.createElement('strong');
+                strong.appendChild(document.createTextNode(match[0]));
+                node.appendChild(strong);
+                pos = keywordsRegex.lastIndex;
+                match = keywordsRegex.exec(text);
+            }
+
+            var after = text.slice(pos);
+
+            node.appendChild(document.createTextNode(after));
+        }
+
+        highlightAllCode();
+    </script>
+</body>
+</html>
