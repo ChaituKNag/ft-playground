@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by anonymous (http://jsbin.com/suvigayole/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+</head>
+<body>
+
+<script id="jsbin-javascript">
+function cloneFunc(func) {
+  
+  var tempFunc = function () {
+    return func.apply(this, arguments);
+  };
+  
+  var keys = Object.keys(func);
+  for(key in keys) {
+    if(func.hasOwnProperty(keys[key])) {
+      tempFunc[keys[key]] = func[keys[key]];
+    }
+  }
+  
+  return tempFunc;
+}
+
+var add = function (a, b) {
+  return a + b;
+}
+
+add.thing = "This is the add function";
+
+var addClone = cloneFunc(add);
+
+console.log(add(10, 20));
+console.log(addClone(10, 20));
+
+console.log(add === addClone);
+
+console.log(addClone.thing);
+</script>
+</body>
+</html>

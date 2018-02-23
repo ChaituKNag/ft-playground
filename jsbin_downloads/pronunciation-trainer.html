@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by ChaituKNag (http://jsbin.com/funecac/3/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+  
+<style id="jsbin-css">
+html {
+  margin: 0;
+  padding: 10px;
+}
+body {
+  margin: 0 auto;
+  width: 100%;
+  
+}
+
+#results iframe {
+  box-sizing: border-box;
+  margin-top: 10px;
+  width: 100%;
+  min-height: 500px;
+  border: 5px solid brown;
+}
+
+#wordInput {
+  box-sizing: border-box;
+  width: 100%;
+  border: 2px solid brown;
+  padding: 5px 10px;
+  margin: 0 auto;
+  font-size: 1.5rem;
+  font-family: Consolas;
+}
+
+#previous {
+  padding: 10px 0px;
+  
+}
+
+#previous>span {
+  margin: 0px 2px;
+  border: 1px solid blue;
+  padding: 2px;
+  font-family: Consolas;
+  background-color: lightblue;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#previous span:hover {
+  color: white;
+}
+
+
+button[type='submit'] {
+  padding: 10px 15px;
+  font-size: 1.2rem;
+  border: 0px solid brown;
+  background-color: #123;
+  color: white;
+  border-radius: 20px;
+  font-family: Consolas;
+  cursor: pointer;
+}
+button[type='submit']:active {
+  border: 0px solid red;
+  padding-left: 17px;
+  padding-top: 12px;
+}
+
+h1 {
+  font-family: consolas;
+  text-align: center;
+  font-size: 3em;
+  text-decoration: underline;
+}
+</style>
+</head>
+<body>
+  <h1>Pronunciation Trainer</h1>
+<form id="wordForm">
+  <p><input type="text" id="wordInput" placeholder="Enter word and press return key"></p>
+
+  <button type="submit">Open Pronunciation</button>
+</form>
+<div id="previous">
+</div>
+<div id="results">
+  
+</div>
+<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+<script id="jsbin-javascript">
+$(function () {
+  var $form = $("#wordForm");
+  var $wordInput = $("#wordInput");
+  var $results = $("#results");
+  var $previous = $("#previous");
+  $wordInput.focus();
+  $wordInput.on('blur', function () {
+    $wordInput.focus();
+  });
+  
+  $form.on('submit', function ($event) {
+    
+    $results.empty();
+    
+    $event.preventDefault();
+    
+    var word = $wordInput.val().trim();
+    
+//     console.log("word is " + word);
+    
+    $("span." + word).remove();
+    
+    $previous
+      .append("<span class='"+ word +"'><span>"+ word +" </span><b>X</b></span>");
+    
+    $("#previous span." + word + " span").on('click', function () {
+      var $word = $("#previous span." + word);
+      var wordText = $word.attr("class");
+      $wordInput.val(wordText);
+      
+      $form.submit();
+      
+    });
+    
+    $("#previous span." + word + " b").on("click", function () {
+//       console.log("Removing " + word);
+      $("#previous span." + word).remove();
+    });
+    
+    $results.append(
+      "<iframe src='https://dictionary.cambridge.org/pronunciation/english/" + word + "'></iframe>" );
+  });
+});
+</script>
+</body>
+</html>
