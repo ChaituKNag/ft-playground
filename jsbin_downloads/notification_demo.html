@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by ChaituKNag (http://jsbin.com/runifev/7/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+  <h1>Notifications POC</h1>
+  <div class="form-group">
+    <label for="notifText">
+      Enter the notification text
+    </label>
+    <input name="notifText" id="notifText" type="text" class="form-control">
+  </div>
+  <button id="notificationBtn" class="btn btn-success">
+    Show Notification
+  </button>
+</div>  
+  
+<script src="https://code.jquery.com/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script id="jsbin-javascript">
+$(function() {
+  var $notifText = $("#notifText");
+  var notifiable = "Notification" in window;
+  var permission = (notifiable? Notification.permission : null);
+  if(notifiable && permission !== "granted") {
+    Notification.requestPermission(function(perm) {
+      if(perm === "granted") permission = perm;
+    });
+  }
+  
+  $("#notificationBtn")
+    .on("click", function () {
+    
+    var message = $notifText.val().trim();
+    
+    if(notifiable && permission === "granted" && message) {
+      var notification = new Notification(message, {
+        "icon": "http://icons.iconarchive.com/icons/iconsmind/outline/128/URL-Window-icon.png"
+      });
+      
+      setTimeout(function () {
+        notification.close();
+      }, 5000);
+    } else if(message) {
+      alert(message);
+    } else {
+      alert("Message should not be empty");
+      $notifText.focus();
+    }
+  });
+})
+</script>
+</body>
+</html>
