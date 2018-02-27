@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by ChaituKNag (http://jsbin.com/wekusuk/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <title>JS Bin</title>
+<style id="jsbin-css">
+body {
+  background-color: #fefeff;
+}
+
+textarea {
+  font-family: "Consolas";
+  font-size: 14px !important;
+}
+
+#unavailableList {
+  background-color: #efe;
+}
+</style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>XML Link Checker</h1>
+    <form id="checkerForm">
+      <div class="form-group">
+        <label for="sitemapContent">
+          Enter the sitemap XML contents:
+        </label>
+        <textarea name="sitemapContent" id="sitemapContent" rows="10" class="form-control" style="resize: vertical"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="urlsList">
+          Enter the list of URLs:
+        </label>
+        <textarea name="urlsList" id="urlsList" rows="10" class="form-control" style="resize: vertical"></textarea>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-outline-info">Process</button>
+      </div>
+    </form>
+
+    <div class="card" id="unavailableListDiv">
+      <div class="card-body">
+        <h5 class="card-title">List of URls NOT available in the sitemap:</h5>
+        <textarea name="unavailableList" id="unavailableList" class="form-control" rows="10" style="resize: vertical" disabled></textarea>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery.min.js"></script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script id="jsbin-javascript">
+$(function () {
+  // console.log("fun starts here"); 
+  
+  var $checkerForm = $("#checkerForm");
+  var $sitemapContent = $("#sitemapContent");
+  var $urlsList = $("#urlsList");
+  var $unavailableList = $("#unavailableList");
+  var $unavailableListDiv = $("#unavailableListDiv");
+  $unavailableListDiv.hide();
+  $checkerForm.on('submit', function ($e) {
+    $e.preventDefault(); 
+    var sitemap = [];
+    $($sitemapContent.val()).find("loc").each(function (el) {
+      sitemap.push($(this).text() || "");
+    });
+    var urls = $urlsList
+      .val()
+      .split("\n")
+      .map(function (url) {
+        return url.trim();
+      })
+      .filter(function (url) {
+        return url !== "";
+      });
+    
+    var unavailableUrls = urls.filter(function (url) {
+      var inSitemap = sitemap.filter(function (sitemapUrl) {
+        return sitemapUrl.indexOf(url) !== -1;
+      });
+      
+      return inSitemap.length === 0;
+    });
+    
+    if(unavailableUrls.length > 0) { 
+      $unavailableList.val(unavailableUrls.join("\n"));
+      $unavailableListDiv.show();
+    }
+    
+    // console.log(sitemap);
+    // console.log(urls);
+    // console.log(unavailableUrls);
+  });
+  
+})
+</script>
+</body>
+
+</html>
