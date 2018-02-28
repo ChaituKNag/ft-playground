@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by ChaituKNag (http://jsbin.com/diciyen/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Number of Days Between</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+  
+<div class="container">
+  <div><h1 class="text-center">Days-between calculator:</h1></div>
+  <div class="row">
+    <form id="daysForm" class="col offset-md-3 col-md-6">
+      <div class="form-group">
+        <label for="fromDate">Select the from date</label>
+        <input class="form-control" type="date" id="fromDate" name="fromDate" required>
+      </div>
+      <div class="form-group">
+        <label for="toDate">Select the to date</label>
+        <input class="form-control" type="date" id="toDate" name="toDate" required>
+      </div>
+      <div class="form-group">
+        <label for="dayOfWeek">Select the day of week</label>
+        <select name="dayOfWeek" id="dayOfWeek" class="form-control" required>
+          <option></option>
+          <option value="sunday">Sunday</option>
+          <option value="monday">Monday</option>
+          <option value="tuesday">Tuesday</option>
+          <option value="wednesday">Wednesday</option>
+          <option value="thursday">Thursday</option>
+          <option value="friday">Friday</option>
+          <option value="saturday">Saturday</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-outline-primary">Process</button>
+      </div>
+    </form>
+  </div>
+  <div class="row">
+    <div id="result">
+      
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  
+<script id="jsbin-javascript">
+$(function () {
+  var $daysForm = $("#daysForm");
+  var $fromDate = $("#fromDate");
+  var $toDate = $("#toDate");
+  var $dayOfWeek = $("#dayOfWeek");
+  var daysOfWeek = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+  
+  $daysForm.on("submit", calculateDays);
+  
+  function calculateDays(e) {
+    e.preventDefault();
+    
+    var from = new Date($fromDate.val()),
+        fromDay = from.getDay(),
+        to = new Date($toDate.val()),
+        toDay = to.getDay(),
+        day = daysOfWeek.indexOf($dayOfWeek.val()),
+        days = 1000 * 3600 * 24,
+        diff = Math.round((to - from)/days + 1),
+        weeks = Math.floor(diff/7),
+        totalCount = weeks
+        remDays = diff%7;
+    
+    if(remDays > 0) {
+        if(fromDay < toDay) {
+        if(
+          (fromDay <= day && toDay > day) ||
+          (fromDay < day && toDay >= day)
+        ) totalCount++;
+      } else if(fromDay > toDay) {
+        if(fromDay <= day) totalCount++; 
+        else if(day <= toDay) totalCount++;
+      }
+    }
+    
+    
+    console.log(
+      "Total number of " + daysOfWeek[day].toUpperCase() + 
+      "s between " + from.toDateString() + 
+      " and " + to.toDateString() + 
+      " is: " + totalCount);
+    
+    
+  }
+});
+</script>
+</body>
+</html>
