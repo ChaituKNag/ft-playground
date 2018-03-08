@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by ChaituKNag (http://jsbin.com/yepukuh/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  
+<div class="container">
+  <h1>Duplicates Remover Tool</h1>
+  <form id="duplicatesRemoverForm">
+    <div class="form-group">
+      <label for="inputList">Enter the list with duplicates:</label>
+      <textarea name="inputList" id="inputList" cols="30" rows="10" class="form-control"></textarea>
+    </div>
+    <div class="form-group" id="outputListDiv">
+      <label for="outputList">List without duplicates:</label>
+      <textarea name="outputList" id="outputList" cols="30" rows="10" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-success" type="submit">Remove Duplicates</button>
+    </div>
+  </form>
+</div>
+  
+<script src="https://code.jquery.com/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script id="jsbin-javascript">
+$(function () {
+  var $inputList = $("#inputList");
+  var $outputList = $("#outputList");
+  var $outputListDiv = $("#outputListDiv");
+  
+  var $duplicatesRemoverForm = $("#duplicatesRemoverForm");
+  
+  $outputListDiv.hide();
+  
+  $duplicatesRemoverForm.on('submit', function (e) {
+    
+    e.preventDefault();
+    
+    $outputListDiv.hide();
+    
+    var inputList = $inputList.val().split("\n");
+    
+    var outputList = inputList.reduce(function (list, item) {
+      
+      console.log("item", item);
+
+      if(item.trim() !== "" && (Array.prototype.indexOf.call(list, item.trim()) < 0)) {
+        list.push(item);
+        
+      }
+
+      return list;
+      
+    }, []);
+    
+    console.log(outputList);
+    
+    $outputList.val(Array.prototype.join.call(outputList,"\n"));
+    
+    $outputListDiv.show();
+    
+  });
+});
+
+
+</script>
+</body>
+</html>
